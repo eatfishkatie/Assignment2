@@ -1,0 +1,119 @@
+<html>
+<script>
+
+	//javascript 
+	var randomNumber = Math.floor(Math.random()*100) +1;
+	
+	var guesses = document.querySelector('.guesses');
+	var lastResult = document.querySelector('.lastResult');
+	var greaterOrLess = document.querySelector('.greaterOrLess');
+	
+	var guessSubmit = document.querySelector('.guessSubmit');
+	var guessField = document.querySelector('.guessField');
+	
+	var guessCount = 1;
+	var resetButton;
+
+	function guessCheck(){
+		var userGuess = Number(guessField.value);
+		
+		if (guessCount === 1){
+			guesses.textContent = 'Former guesses: ';
+		}
+		
+		guesses.textContent += userGuess + ' ';
+		
+		if (userGuess === randomNumber) {
+			lastResult.textContent = 'You guessed correct!';
+			lastResult.style.backgroundColor = '#99ff66';
+			greaterOrLess.textContent = '';
+			setGameOver();
+		}
+		
+		else if (guessCount === 10){
+			lastResult.textContent = 'You lost.';
+			setGameOver();
+		}
+		
+		else{
+			lastResult.textContent = 'Wrong';
+			lastResult.style.backgroundColor = '#ff5050';
+			
+			if (userGuess < randomNumber){
+				greaterOrLess.textContent = 'Too low.';
+			}
+			
+			else if (userGuess > randomNumber){
+				greaterOrLess.textContent = 'Too high.';
+			}
+			
+		}
+		
+		guessCount++;
+		guessField.value = '';
+		guessField.focus();
+		
+	}
+	
+	guessSubmit.addEventListener('click', checkGuess); //this is not null?
+	
+	function setGameOver(){
+		guessField.disabled = true;
+		guessSubmit.disabled = true;
+		resetButton = documnet.createdElement('button');
+		resetButton.textContent = 'New Game';
+		document.body.appendChild(resetButton);
+		resetButton.addEventListener('click', resetGame);
+	}
+	
+	function resetGame(){
+		guessCount = 1;
+		
+		var resetParas = document.querySelectorAll('.resultParas p');
+		
+		for (var i = 0; i < resetParas.length; i++){
+			resetParas[i].textContent = '';
+		}
+		
+		resetButton.parentNode.removeChild(resetButton);
+		
+		guessField.disabled = false;
+		guessSubmit.disabled = false;
+		guessField.value = '';
+		guessField.focus();
+		
+		lastResult.style.backgroundColor = 'white';
+		
+		randomNumber = Math.floor(Math.random() * 100) +1;
+		
+	}
+	
+	//add HTML event listeners - to-do
+	
+</script>
+
+<style>
+	/* this is where the css goes */
+	
+	div {margin: 100 px;}
+	
+</style>
+
+<header>
+	
+</header>
+
+<body>
+	<div>
+		
+		<p class = "guesses"></p>
+		<p class = "lastResult"></p>
+		<p class = "greaterOrLess"></p>
+		
+		<label for = "guessField">Take a guess: </label>
+		<input type = "text" id = "guessField" class = "guessField"></input>
+		<input type = "submit" value = "Submit" class = "guessSubmit"></input>
+		
+	<div>
+</body>
+</html>
